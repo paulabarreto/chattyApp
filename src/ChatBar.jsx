@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import App from "./App.jsx";
+const uuidv1 = require('uuid/v1');
 
 class ChatBar extends Component {
   render() {
@@ -14,7 +15,7 @@ class ChatBar extends Component {
 
   _handleEnterPress = e => {
     if (e.key === 'Enter') {
-      this.props.addMessage({id: 5, username: this.props.user.name, content: e.target.value});
+      this.props.addMessage({id:uuidv1(), username: this.props.user.name, content: e.target.value});
       e.target.value = "";
     }
   }
