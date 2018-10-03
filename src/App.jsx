@@ -2,31 +2,33 @@ import React, {Component} from 'react';
 import ChatBar from "./ChatBar.jsx";
 import Message from "./Message.jsx";
 import MessageList from "./MessageList.jsx";
+const uuidv1 = require('uuid/v1');
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentUser: {name: "Bob"},
-      messages: []
+      messages: [],
+      onlineUsers: 0
     };
   }
 
   componentDidMount() {
-    console.log("componentDidMount <App />");
-    // setTimeout(() => {
-    //   console.log("Simulating incoming message");
-    //   // Add a new message to the list of messages in the data store
-    //   const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-    //   const messages = this.state.messages.concat(newMessage)
-    //   // Update the state of the app component.
-    //   // Calling setState will trigger a call to render() in App and all child components.
-    //   this.setState({messages: messages})
-    // }, 3000);
     this.socket = new WebSocket("ws://localhost:3001");
+
     this.socket.onmessage = (event) => {
-      console.log(event);
+      console.log(event.data);
+
       const newMessage = JSON.parse(event.data);
+      if(newMessage.type === "postMessage"){
+        newMessage.type = "incomingMessage";
+      }else if(newMessage.type === "postNotification"){
+        newMessage.type = "incomingNotification";
+      } else if(newMessage.type === "usersOnline") {
+        this.setState({usersOnline: newMessage.usersOnline});
+      }
       const newMessages = this.state.messages.concat(newMessage);
       this.setState({messages: newMessages});
     }
@@ -36,11 +38,14 @@ class App extends Component {
     this.socket.send(JSON.stringify(message))
   };
 
-    // this.setState(prevState => ({
-      //   ...prevState,
-      //   messages: [...prevState.messages, message]
-      // }));
-
+  updateUsername = (newName) => {
+    this.socket.send(JSON.stringify({
+      id: uuidv1(),
+      type: "postNotification",
+      content: `${this.state.currentUser.name} has changed username to ${newName}`
+    }))
+    this.setState({currentUser: {name: newName}})
+  }
 
   render() {
 
@@ -48,14 +53,14 @@ class App extends Component {
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <div className="usersOnline">{this.state.usersOnline} users online</div>
         </nav>
-        <ChatBar user={this.state.currentUser} addMessage={this._addMessage}/>
+        <ChatBar currentUser={this.state.currentUser} addMessage={this._addMessage} updateUsername={this.updateUsername}/>
         <MessageList messages={this.state.messages}/>
       </div>
 
     );
   }
-
 }
 
 export default App;

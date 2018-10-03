@@ -68,6 +68,10 @@ h1 {
       font-weight: 700;
     }
 
+    .notification-content {
+      color: red;
+    }
+
     .navbar {
       background: tomato;
       border-bottom: 1px solid black;
@@ -77,6 +81,12 @@ h1 {
       position: fixed;
       right: 0;
       top: 0;
+
+      .usersOnline {
+        float: right;
+        font-size: 150%;
+        padding: 1em;
+      }
     }
 
     .navbar-brand {
