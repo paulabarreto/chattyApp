@@ -23,11 +23,7 @@ wss.broadcast = function broadcast(data) {
 
 wss.on('connection', (ws) => {
   const usersOnline = parseInt(wss.clients.size);
-  // wss.clients.forEach(function each(client) {
-  //     client.send(usersOnline);
-  // });
-
-  wss.broadcast({usersOnline: usersOnline, type: "usersOnline"})
+  wss.broadcast({usersOnline: usersOnline, type: "usersOnline"});
 
 
   ws.on('message', function incoming(message) {

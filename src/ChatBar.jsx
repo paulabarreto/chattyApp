@@ -1,5 +1,4 @@
-import React,
-{Component} from 'react';
+import React, {Component} from 'react';
 import App from "./App.jsx";
 const uuidv1 = require('uuid/v1');
 

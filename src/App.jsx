@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import ChatBar from "./ChatBar.jsx";
-import Message from "./Message.jsx";
 import MessageList from "./MessageList.jsx";
+import NavBar from "./NavBar.jsx";
+
 const uuidv1 = require('uuid/v1');
 
 
@@ -19,15 +20,17 @@ class App extends Component {
     this.socket = new WebSocket("ws://localhost:3001");
 
     this.socket.onmessage = (event) => {
-      console.log(event.data);
-
       const newMessage = JSON.parse(event.data);
-      if(newMessage.type === "postMessage"){
-        newMessage.type = "incomingMessage";
-      }else if(newMessage.type === "postNotification"){
-        newMessage.type = "incomingNotification";
-      } else if(newMessage.type === "usersOnline") {
-        this.setState({usersOnline: newMessage.usersOnline});
+      switch(newMessage.type) {
+        case "postMessage":
+          newMessage.type = "incomingMessage";
+          break;
+        case "postNotification":
+          newMessage.type = "incomingNotification";
+          break;
+        case "usersOnline":
+          this.setState({usersOnline: newMessage.usersOnline});
+          break;
       }
       const newMessages = this.state.messages.concat(newMessage);
       this.setState({messages: newMessages});
@@ -51,10 +54,7 @@ class App extends Component {
 
     return (
       <div>
-        <nav className="navbar">
-          <a href="/" className="navbar-brand">Chatty</a>
-          <div className="usersOnline">{this.state.usersOnline} users online</div>
-        </nav>
+        <NavBar usersOnline={this.state.usersOnline} />
         <ChatBar currentUser={this.state.currentUser} addMessage={this._addMessage} updateUsername={this.updateUsername}/>
         <MessageList messages={this.state.messages}/>
       </div>
