@@ -32,6 +32,7 @@ class App extends Component {
           this.setState({usersOnline: newMessage.usersOnline});
           break;
       }
+
       const newMessages = this.state.messages.concat(newMessage);
       this.setState({messages: newMessages});
     }
@@ -55,8 +56,8 @@ class App extends Component {
     return (
       <div>
         <NavBar usersOnline={this.state.usersOnline} />
-        <ChatBar currentUser={this.state.currentUser} addMessage={this._addMessage} updateUsername={this.updateUsername}/>
         <MessageList messages={this.state.messages}/>
+        <ChatBar currentUser={this.state.currentUser} addMessage={this._addMessage} updateUsername={this.updateUsername}/>
       </div>
 
     );
