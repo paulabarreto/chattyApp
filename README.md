@@ -4,6 +4,10 @@ chattyApp
 A web app that allows multiple users to chat online and send images.
 Each user has a username color randomly picked for them at connection.
 
+##Screenshots
+![Screenshot - Bob's window](Screenshot-Bobs-window.jpg)
+![Screenshot - John's window](ScreenshotJohns-window.jpg)
+
 ### Dependencies
 
 * Babel-core
