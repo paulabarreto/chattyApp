@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "Bob"},
+      currentUser: {name: "Bob", color: "red"},
       messages: [],
       onlineUsers: 0
     };
@@ -48,7 +48,7 @@ class App extends Component {
       type: "postNotification",
       content: `${this.state.currentUser.name} has changed username to ${newName}`
     }))
-    this.setState({currentUser: {name: newName}})
+    this.setState({currentUser: {name: newName, color: "green"}})
   }
 
   render() {
