@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import ChatBar from "./ChatBar.jsx";
 import MessageList from "./MessageList.jsx";
+import Message from "./Message.jsx";
 import NavBar from "./NavBar.jsx";
+
 
 const uuidv1 = require('uuid/v1');
 
@@ -10,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "Bob", color: "red"},
+      currentUser: {name: "Anonymous"},
       messages: [],
       onlineUsers: 0
     };
@@ -35,12 +37,14 @@ class App extends Component {
           this.setState({usersOnline: newMessage.usersOnline});
           break;
         case "colors":
-        this.setState({color: newMessage.color})
+        // this.state.currentUser.color = newMessage.color;
+        this.setState({color: newMessage.color});
         break;
       }
 
       const newMessages = this.state.messages.concat(newMessage);
       this.setState({messages: newMessages});
+      console.log(this.state.messages);
     }
   }
 
@@ -52,13 +56,14 @@ class App extends Component {
     }
   };
 
+
   render() {
 
     return (
       <div>
         <NavBar usersOnline={this.state.usersOnline} />
-        <MessageList messages={this.state.messages} color={this.state.color} />
-        <ChatBar currentUser={this.state.currentUser} addMessage={this._addMessage} updateUsername={this.updateUsername}/>
+        <MessageList messages={this.state.messages} />
+        <ChatBar currentUser={this.state.currentUser} addMessage={this._addMessage} color={this.state.color}/>
       </div>
 
     );

@@ -35,7 +35,7 @@ class ChatBar extends Component {
         content: event.target.value,
         type: "postMessage",
         subtype: subtype,
-        color: this.props.currentUser.color
+        color: this.props.color
       });
       event.target.value = "";
     }

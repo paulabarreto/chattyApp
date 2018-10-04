@@ -24,9 +24,10 @@ wss.broadcast = function broadcast(data) {
 };
 
 wss.on('connection', (ws) => {
-  const color = randomColor();
+  const color = {type: "colors", color: randomColor()};
   const usersOnline = parseInt(wss.clients.size);
-  wss.broadcast({id: uuidv1(), color: color, type: "colors"});
+  ws.send(JSON.stringify(color));
+  // wss.broadcast({id: uuidv1(), color: color, type: "colors"});
   wss.broadcast({id: uuidv1(), usersOnline: usersOnline, type: "usersOnline"});
 
 
