@@ -4,7 +4,7 @@ class MessageList extends Component {
   render() {
     const messages = this.props.messages.map(message => (
       <div key={message.id} className={message.type == "incomingNotification" ? "notification" :  ""}>
-        <span style={{color: message.color}} className="message-username">{message.username}</span>
+        <span style={{color: this.props.color}} className="message-username">{message.username}</span>
         {message.subtype === "image" &&
           <div>
           <br />

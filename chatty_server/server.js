@@ -3,6 +3,7 @@
 const express = require('express');
 const SocketServer = require('ws').Server;
 const randomColor = require('randomcolor');
+const uuidv1 = require('uuid/v1');
 
 // Set the port to 3001
 const PORT = 3001;
@@ -25,8 +26,8 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', (ws) => {
   const color = randomColor();
   const usersOnline = parseInt(wss.clients.size);
-  wss.broadcast({color: color, type: "colors"});
-  wss.broadcast({usersOnline: usersOnline, type: "usersOnline"});
+  wss.broadcast({id: uuidv1(), color: color, type: "colors"});
+  wss.broadcast({id: uuidv1(), usersOnline: usersOnline, type: "usersOnline"});
 
 
   ws.on('message', function incoming(message) {

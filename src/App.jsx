@@ -17,8 +17,11 @@ class App extends Component {
   }
 
   componentDidMount() {
+
+    //Connecting to the server
     this.socket = new WebSocket("ws://localhost:3001");
 
+    //Receiving new messages from the server
     this.socket.onmessage = (event) => {
       const newMessage = JSON.parse(event.data);
       switch(newMessage.type) {
@@ -31,6 +34,9 @@ class App extends Component {
         case "usersOnline":
           this.setState({usersOnline: newMessage.usersOnline});
           break;
+        case "colors":
+        this.setState({color: newMessage.color})
+        break;
       }
 
       const newMessages = this.state.messages.concat(newMessage);
@@ -38,25 +44,20 @@ class App extends Component {
     }
   }
 
+  //Sends messages to the server
   _addMessage = message => {
     this.socket.send(JSON.stringify(message))
+    if(message.type === "postNotification"){
+      this.setState({currentUser: {name: message.newName}});
+    }
   };
-
-  updateUsername = (newName) => {
-    this.socket.send(JSON.stringify({
-      id: uuidv1(),
-      type: "postNotification",
-      content: `${this.state.currentUser.name} has changed username to ${newName}`
-    }))
-    this.setState({currentUser: {name: newName, color: "green"}})
-  }
 
   render() {
 
     return (
       <div>
         <NavBar usersOnline={this.state.usersOnline} />
-        <MessageList messages={this.state.messages}/>
+        <MessageList messages={this.state.messages} color={this.state.color} />
         <ChatBar currentUser={this.state.currentUser} addMessage={this._addMessage} updateUsername={this.updateUsername}/>
       </div>
 

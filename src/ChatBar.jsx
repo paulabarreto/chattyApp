@@ -7,13 +7,19 @@ class ChatBar extends Component {
     super(props);
   }
 
-
+  //Sends an object of changed username notification to addMessage function
   _handleUserChange = (event) => {
     if (event.key === 'Enter') {
-      this.props.updateUsername(event.target.value)
+      this.props.addMessage({
+        newName: event.target.value,
+        id: uuidv1(),
+        type: "postNotification",
+        content: `${this.props.currentUser.name} has changed username to ${event.target.value}`
+      });
     }
   };
 
+  //Sends an object of new messages to addMessage function
   _handleContentChange = (event) => {
     let subtype = "";
     if (event.key === 'Enter') {
@@ -31,6 +37,7 @@ class ChatBar extends Component {
         subtype: subtype,
         color: this.props.currentUser.color
       });
+      event.target.value = "";
     }
   }
 
