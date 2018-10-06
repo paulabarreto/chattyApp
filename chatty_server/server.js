@@ -48,13 +48,24 @@ wss.on('connection', (ws) => {
     //handling images
 
     // https://img.hi5messages.com/en/funny/35.jpg
-    
-      if (/(.* .*)?.*\.jpg$/.test(incomingMessage.content)) {
-        // let space = typedMsg.indexOf(" ");
-        // typedMsg = typedMsg.slice(space, typedMsg.length + 1);
-        // incomingMessage.content = typedMsg.slice(0, space);
-        incomingMessage.type = "image";
+    function checkURL(msg) {
+      let result = "";
+      if (/(.* .*)?.*\.jpg$/.test(msg)){
+        result = msg;
       }
+      return result;
+    }
+
+    let content = incomingMessage.content;
+
+    if(checkURL(content)) {
+      let newContent = content.split(" ");
+      const result1 = newContent.filter(word => checkURL(word));
+      const result2 = newContent.filter(word => !checkURL(word));
+      incomingMessage["image"] = result1;
+      incomingMessage.content = result2;
+      incomingMessage.type = "image";
+    }
 
     wss.clients.forEach(function each(client) {
       client.send(JSON.stringify(incomingMessage));
