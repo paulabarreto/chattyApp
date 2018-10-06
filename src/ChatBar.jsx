@@ -12,7 +12,6 @@ class ChatBar extends Component {
     if (event.key === 'Enter') {
       this.props.addMessage({
         newName: event.target.value,
-        id: uuidv1(),
         type: "postNotification",
         content: `${this.props.currentUser.name} has changed username to ${event.target.value}`
       });
@@ -21,20 +20,13 @@ class ChatBar extends Component {
 
   //Sends an object of new messages to addMessage function
   _handleContentChange = (event) => {
-    let subtype = "";
+    var typedMsg = event.target.value;
     if (event.key === 'Enter') {
 
-      if (/jpg$/.test(event.target.value)) {
-        subtype = "image";
-      } else {
-        subtype = "";
-      }
       this.props.addMessage({
-        id:uuidv1(),
         username: this.props.currentUser.name,
-        content: event.target.value,
+        content: typedMsg,
         type: "postMessage",
-        subtype: subtype,
         color: this.props.color
       });
       event.target.value = "";

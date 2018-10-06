@@ -4,10 +4,6 @@ import MessageList from "./MessageList.jsx";
 import Message from "./Message.jsx";
 import NavBar from "./NavBar.jsx";
 
-
-const uuidv1 = require('uuid/v1');
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,19 +23,12 @@ class App extends Component {
     this.socket.onmessage = (event) => {
       const newMessage = JSON.parse(event.data);
       switch(newMessage.type) {
-        case "postMessage":
-          newMessage.type = "incomingMessage";
-          break;
-        case "postNotification":
-          newMessage.type = "incomingNotification";
-          break;
         case "usersOnline":
           this.setState({usersOnline: newMessage.usersOnline});
           break;
         case "colors":
-        // this.state.currentUser.color = newMessage.color;
-        this.setState({color: newMessage.color});
-        break;
+          this.setState({color: newMessage.color});
+          break;
       }
 
       const newMessages = this.state.messages.concat(newMessage);

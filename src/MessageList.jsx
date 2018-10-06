@@ -6,9 +6,7 @@ function MessageList (props) {
     <div>
       {props.messages.map(message => {
         return (
-          <main className="messages">
-            <div className="message"><Message message={message} /></div>
-          </main>
+            <Message message={message} />
         )
       })}
     </div>
