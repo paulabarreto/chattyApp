@@ -70,6 +70,12 @@ wss.on('connection', (ws) => {
     wss.clients.forEach(function each(client) {
       client.send(JSON.stringify(incomingMessage));
     });
-    ws.on('close', () => console.log('Client disconnected'));
+
+  });
+  ws.on('close', () => {
+    console.log('Client disconnected')
+    const usersOnlineUpdate = parseInt(wss.clients.size);
+    wss.broadcast({id: uuid(), usersOnline: usersOnlineUpdate, type: "usersOnline"});
+
   });
 });
