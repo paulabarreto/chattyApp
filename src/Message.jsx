@@ -1,16 +1,6 @@
 import React, {Component} from 'react';
 
 function Message (props) {
-  var type;
-  switch(props.message.type) {
-    case "incomingNotification":
-      type = "notification";
-      break;
-    case "incomingMessage":
-      type = "message-content";
-    case "image":
-        type = "message-content";
-  }
 
   return (
     <main key={props.message.id} className="message">

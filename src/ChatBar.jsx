@@ -3,9 +3,6 @@ import App from "./App.jsx";
 const uuidv1 = require('uuid/v1');
 
 class ChatBar extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   //Sends an object of changed username notification to addMessage function
   _handleUserChange = (event) => {
@@ -20,7 +17,7 @@ class ChatBar extends Component {
 
   //Sends an object of new messages to addMessage function
   _handleContentChange = (event) => {
-    var typedMsg = event.target.value;
+    let typedMsg = event.target.value;
     if (event.key === 'Enter') {
 
       this.props.addMessage({
